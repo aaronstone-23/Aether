@@ -1,7 +1,7 @@
 """Deterministic (non-LLM scam rules). Always run first"""
 import re
 
-from .brand import brand_in_host, host_of
+from .brands import brand_in_host, host_of
 
 URGENCY_PHRASES = [
     "urgent", "immediately", "act now", "within 24 hours", "last warning", "account will be suspended", "account will be closed", "account will be blocked", "will be blocked", "update kyc", "kyc update", "final notice", "verify now", "click here", "limited time", "expires today",
@@ -63,7 +63,7 @@ def extract_upi_ids(text:str)-> list[str]:
      # name@handle with no ".com" after it (that would be an email address)
      return re.findall(r"\b[\w.\-]{2,}@[a-zA-Z]{2,20}\b(?!\.[a-zA-Z])", text)
 
-def analyse_links(url: list[str]) -> dict:
+def analyse_links(urls: list[str]) -> dict:
     out = {"lookalike":[],
            "tld":[], 
            "shortener":[],
@@ -85,9 +85,31 @@ def analyse_links(url: list[str]) -> dict:
     return out
 
 def score_text(text: str) -> dict:
-    # Returns nice format from a blob of text
+     # Returns nice format from a blob of text
     matches = {k: [p for p, rx in pats if rx.search(text)] for k, pats in _PATTERNS.items()}
-    matches.update(analyze_links(extract_urls(text)))
+    matches.update(analyse_links(extract_urls(text)))
     matches["upi"] = extract_upi_ids(text)
     score = sum(min(len(matches[k]), 3) * w for k, w in WEIGHTS.items())
     return {"score": min(score, 60), "matches": matches}
+
+def describe_matches(matches: dict) -> list[str]:
+    return [f"{LABELS[k]}: {', '.join(map(str, v[:3]))}"
+            for k, v in matches.items() if v and k in LABELS]
+
+def verdict_from_score(score: int) -> tuple[str, str]:
+    if score >= 70:
+        return "fake", "high"
+    if score >= 40:
+        return "suspicious", "medium"
+    return "likely_legit", "low"
+
+def build_actions(verdict:str) -> list[str]:
+    if verdict == "fake":
+        return ["Do not click any links", "Do not reply or share OTP",
+                "Report it (cybercrime.gov.in, or call 1930 if money is involved)", "If you entered credentials, change your password immediately"]
+    if verdict == "suspicious":
+        return ["Verify the sender through an official channel",
+                "Do not click links until verified", "Contact your bank using the number on your card or official site"]
+    return ["No immediate red flags found. Stay alert."]
+    
+    
