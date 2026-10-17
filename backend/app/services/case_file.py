@@ -60,3 +60,26 @@ def explain_verdict(data: dict) -> str:
                             max_tokens=250, temperature=0.3, timeout=8.0)
     return out or ("This message shows several warning signs:" + "; ".join(flags[:3])+".")
 
+def build_case_file(raw_input: str, channel: str = "auto") -> dict:
+    text = (raw_input or "").strip()
+
+    if looks_like_email(text):
+        result = analyze_headers(text)  
+        channel = "email"
+    else:
+        result = analyze_headers(text)
+        channel = "text" if channel == "auto" else channel
+    body = result.pop("body_text", "")
+
+    # URL AND PHONES are checked in the bODY only  NOT IN THE HEADER NOISE BTW
+
+    url_report = check_urls(body)
+    if url_report.get("malicious"):
+        result["red_flags"].append(
+            f"Google Safe Browsing flagged {len(url_report['malicious'])} link(s) as dangerous"
+        )
+        result["risk_score"] = min(result["risk_score"]+25, 100)
+
+    phone_report = check_phones(body)
+    if any(p["type"] == "voip" for p in phone_report["numbers"]):
+        result["red_flags"].append("Contains a VOIP number (common in scams)")
