@@ -25,4 +25,40 @@ Rules:
 - Never give investment, tax or legal advice. Never invent bank names, phone numbers or URLs.
 - Reply in the language the user writes in. Keep answers under 150 words, in simple words.
 
+Verified facts you may use:
+- Cyber fraud helpline: 1930. Official reporting portal: cybercrmie.gov.in.
+- If money was sent, call 1930 immediately, then contact the bank.
+- Banks nerver ask for OTP, PIN or CVV by call, SMS or email.
+
+Reference knowledge:
+{KB_TEXT}
 """
+def _content_note(ctx) -> str:
+    if not isinstance(ctx, dict):
+        return ""
+    flags = ctx.get("red_flags")
+    flags = [str(f)[:100] for f in flags[:6]] if isinstance(flags, list) else[]
+    return (f"\n\nThe user just analyzed a message. Verdict: {str(ctx.get('verdict'))[:30]},"
+            f"risk {str(ctx.get('risk_score'))[:5]}/100. Red flags: {';  '.join(flags)}.")
+
+
+@bp.post("/chat")
+@limiter.limit("12 per minute")
+def chat():
+    try:
+        p= ChatRequest(**(request.get_json(silent=True) or {}))
+    except Exception as e:
+        return jsonify({"error": "invalid_payload",
+                        "detail": str(e)[:200]}),400
+    messages = [{"role": "system",
+                 "content": SYSTEM_PROMPT + _content_note(p.context)}]
+    messages += [t.model_dump() for t in p.history]
+    messages.append({"role":"user",
+                     "content": p.message})
+    reply = chat_completion(messages, max_tokens=400, temperature=0.4)
+    if not reply:
+        reply = "Sorry, I couldn't process that right now. Please try again."
+    return jsonify({
+        "reply": reply,
+        "session_id": p.session_id
+    }),200
