@@ -1,0 +1,8 @@
+{"scenarios": [{
+  "id": "seed_kyc_1", "category": "kyc_expiry", "difficulty": "easy", "channel": "sms",
+  "sender": "NOVABK-ALERT", "subject": null,
+  "body": "Dear customer, your Nova Bank KYC expires today. Update now: http://novabank-kyc.example/update or your account will be blocked.",
+  "is_scam": true, "correct_answer": "scam",
+  "explanation": "Real banks don't threaten to block accounts over a link in an SMS.",
+  "red_flags": ["Urgency", "Lookalike link", "Threat of blocking"]
+}]}

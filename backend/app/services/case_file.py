@@ -6,7 +6,7 @@ from flask import current_app
 
 from ..extension import get_supabase
 from ..models import Verdict
-from ..routes.forensics import analyze_headers
+from .forensics import analyze_headers
 from .llm import chat_completion
 from .phone import check_phones
 from .rules import (score_text, describe_matches, verdict_from_score, build_actions)
@@ -83,3 +83,47 @@ def build_case_file(raw_input: str, channel: str = "auto") -> dict:
     phone_report = check_phones(body)
     if any(p["type"] == "voip" for p in phone_report["numbers"]):
         result["red_flags"].append("Contains a VOIP number (common in scams)")
+
+    result["Verdict"], result["confidence"] = verdict_from_score(result["risk_score"])
+    result["recommended_actions"] = build_actions(result["Verdict"])
+    result["explanation"] = explain_verdict(result)
+    result["url_report"] = url_report
+    result["phone_report"] = phone_report
+    result["channel"] = channel
+    result["job_id"] = uuid.uuid4().hex
+    return result
+
+def save_verdict(verdict: dict) -> bool:
+    '''Stores the RESULTS ONLY OKAY?? and NOPE NEVER EVERR the pasted message nor the user's email WE ARE NOT CHINESE APP LOL AHAHAH'''
+
+    sb = get_supabase()
+    if not sb:
+        return False
+    try:
+        row = Verdict(
+            job_id=verdict["job_id"],
+            verdict = verdict.get("Verdict", "Unknown"),
+            confidence=verdict.get("confidence", "low"),
+            claimed_identity=(verdict.get("claimed_identity") or "")[:100],
+            red_flags=verdict.get("red_flags", []),
+            recommended_actions=verdict.get("recommended_actions", []),
+            explanation=verdict.get("explanation", ""),
+            origin_country=verdict.get("technical_evidence", {}).get("originating_region") or "",
+            channel=verdict.get("channel", "email"),
+        )
+        sb.table("verdicts").insert(row.model_dump(exclude = {"created_at"})).execute()
+        return True
+    except Exception as e:
+        current_app.logger.warning("Failed to save verdict: %s", e)
+        return False
+
+def get_recent_verdicts(limit: int = 30) -> list:
+    sb = get_supabase()
+    if not sb:
+        return []
+    try:
+        r = sb.table("verdicts").select("*").order("created_at", desc=True).limit(limit).execute()
+        return r.data or []
+    except Exception:
+        return []
+    

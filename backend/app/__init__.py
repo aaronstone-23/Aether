@@ -21,7 +21,7 @@ def create_app():
 
     from .routes.health import bp as health_bp
     from .routes.analyse import bp as analyse_bp
-    from .routes.forensics import bp as forensics_bp
+    from .services.forensics import bp as forensics_bp
     from .routes.bank_watch import bp as bank_bp
     from .routes.simulation import bp as sim_bp
     from .routes.chat import bp as chat_bp
@@ -43,10 +43,10 @@ def create_app():
         app.logger.exception("Unhandled error")
         return jsonify({"error": "internal_error", "message":"Something went wrong on our side."}), 500
 
-    # # Warming the simulation cache once
-    # in_reloader_parent = (os.getenv("FLASK_DEBUG") == "1" and os.getenv("WERKZEUG_RUN_MAIN") != "true")
-    # if not in_reloader_parent:
-    #     from .services.simulation_services import warm_cache
-    #     threading.Thread(target=warm_cache, args=(app, 5), daemon=True).start()
+    # Warming the simulation cache once
+    in_reloader_parent = (os.getenv("FLASK_DEBUG") == "1" and os.getenv("WERKZEUG_RUN_MAIN") != "true")
+    if not in_reloader_parent:
+        from .services.simulation_service import warm_cache
+        threading.Thread(target=warm_cache, args=(app, 5), daemon=True).start()
 
-    # return app 
+    return app 
