@@ -15,7 +15,7 @@ def _post(model, messages, max_tokens, temperature, timeout, response_format) ->
         payload["response_format"] = response_format
     resp = httpx.post(
         cfg["OPENROUTER_URL"],
-        headers={"Authorization": f"Bearer {cfg['OPENROUTER_KEY']}",
+        headers={"Authorization": f"Bearer {cfg.get('OPENROUTER_API_KEY') or cfg.get('OPENROUTER_KEY')}",
                  "Content-type": "application/json",
                  "HTTP-Referer": "https://aether.local", 
                  "X-Title": "Aether"},
@@ -29,22 +29,41 @@ def _post(model, messages, max_tokens, temperature, timeout, response_format) ->
     return content.strip()
 
 
+
 def chat_completion(messages, max_tokens=500, temperature=0.3,
-                    timeout=12.0, response_format = None)-> str:
-    # Try the main model, then the fall back. Returns '' if both fail
+                    timeout=12.0, response_format=None) -> str:
+    """Try the primary model, then the fallback. Return '' if both fail."""
     cfg = current_app.config
-    if not cfg["OPENROUTER_API_KEY"]:
+
+    api_key = cfg.get("OPENROUTER_API_KEY") or cfg.get("OPENROUTER_KEY")
+    if not api_key:
+        current_app.logger.warning("OpenRouter API key is not configured")
         return ""
-    for model in (cfg["OPENROUTER_MODEL"], cfg["OPENROUTER_FALLBACK_MODEL"]):
+
+    models = [
+        cfg.get("OPENROUTER_MODEL"),
+        cfg.get("OPENROUTER_FALLBACK_MODEL"),
+    ]
+
+    for model in models:
         if not model:
             continue
+
         try:
-            out = _post(model, messages, max_tokens, temperature, timeout, response_format)
+            out = _post(
+                model, messages, max_tokens, temperature,
+                timeout, response_format
+            )
             if out:
                 return out
         except Exception as e:
-            current_app.logger.warning("LLM CALL FAILED (%s): %s", model, type(e).__name__)
+            current_app.logger.warning(
+                "LLM CALL FAILED (%s): %s",
+                model, type(e).__name__
+            )
+
     return ""
+
 
 def _extract_json(raw: str):
     start, end = raw.find("{"), raw.rfind("}")
