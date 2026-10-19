@@ -1,6 +1,12 @@
 import json
 import httpx
+from flask import Blueprint, jsonify
 
+bp = Blueprint("health", __name__)
+
+@bp.get("/health")
+def health():
+    return jsonify({"status": "ok", "services": "aether"}), 200
 B = "http://127.0.0.1:5000/api"
 print(httpx.get(f"{B}/health").json())
 
