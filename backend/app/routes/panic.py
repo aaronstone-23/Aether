@@ -17,6 +17,12 @@ NO_MONEY = [
 
 @bp.get("/panic/<kind>")
 def panic(kind):
-    steps = MONEY_SENT if kind == "money_sent" else NO_MONEY
-    return jsonify({"kind": kind, "steps": steps}), 200
+    if kind == "money_sent":
+        steps =  MONEY_SENT
+    elif kind == "no_money":
+        steps = NO_MONEY
+    else:
+        return jsonify({
+            "error": "unknown_panic_kind"
+        }), 404
 

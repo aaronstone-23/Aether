@@ -21,15 +21,15 @@ def create_app():
 
     from .routes.health import bp as health_bp
     from .routes.analyse import bp as analyse_bp
-    # from .services.forensics import bp as forensics_bp
-    # from .routes.bank_watch import bp as bank_bp
-    # from .routes.simulation import bp as sim_bp
+    from .services.forensics import bp as forensics_bp
+    from .routes.bank_watch import bp as bank_bp
+    from .routes.simulation import bp as sim_bp
     from .routes.chat import bp as chat_bp
     from .routes.map_data import bp as map_bp
     from .routes.panic import bp as panic_bp
     from .routes.demo import bp as demo_bp
 
-    for bp in (health_bp, analyse_bp, chat_bp, map_bp, panic_bp, demo_bp):
+    for bp in (health_bp, analyse_bp, forensics_bp, bank_bp, sim_bp, chat_bp, map_bp, panic_bp, demo_bp):
         app.register_blueprint(bp, url_prefix="/api") 
 
     # REAL HTTP ERRORS keep their real status code

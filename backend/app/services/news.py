@@ -33,7 +33,7 @@ def fetch_bank_news(bank_name: str, limit: int = 8) -> list[dict]:
         "source": (e.get("source") or {}).get("title", ""),
         "published": e.get("published", ""),
         "summary": re.sub(r"<[^>]+>", "", e.get("summary", ""))[:300],
-    } for e in feed.enteries[:limit]]
+    } for e in feed.entries[:limit]]
 
     if articles:
         _cache[key] = (time(), articles)

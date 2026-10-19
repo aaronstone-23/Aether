@@ -247,7 +247,7 @@ def analyze_headers(raw_email: str)-> dict:
     return {
         "verdict": verdict,
         "confidence": confidence,
-        "risk-score": score,
+        "risk_score": score,
         "claimed_identity": name,
         "technical_evidence": evidence,
         "red_flags":flags,

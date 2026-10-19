@@ -12,7 +12,7 @@ class Config:
     FRONTEND_URL = os.getenv("FRONTEND_URL", "https://localhost:5173")
     ADMIN_KEY = os.getenv("ADMIN_KEY", "")
 
-    SUPABASE_URL = os.getenv("SUPERBASE_URL", "")
+    SUPABASE_URL = os.getenv("SUPABASE_URL", "")
     SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
 
     OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
@@ -22,7 +22,7 @@ class Config:
 
     SAFE_BROWSING_API_KEY = os.getenv("SAFE_BROWSING_API_KEY", "")
 
-    SMIP_HOST = os.getenv("SMTP_HOST", "")
+    SMTP_HOST = os.getenv("SMTP_HOST", "")
     SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
     SMTP_USER = os.getenv("SMTP_USER", "")
     SMTP_PASS = os.getenv("SMTP_PASS", "")

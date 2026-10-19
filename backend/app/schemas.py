@@ -7,7 +7,9 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 REAL_BRANDS = re.compile(
     r"\b(hdfc|icici|sbi|axis bank|kotak|yes bank|pnb|bank of baroda|"
-    r"paypal|amazon|google|microsoft|apple|netflix|paytm|phonepe)\b, re.I")
+    r"paypal|amazon|google|microsoft|apple|netflix|paytm|phonepe)\b",
+    re.I,
+)
 ALLOWED_HOST = re.compile(r"(\.example|\.test|\.invalid|^localhost|^scam-demo\.xyz)$", re.I)
 URL_RE = re.compile(r"https?://[^\s<>\"']+", re.I)
 TEN_DIGITS = re.compile(r"\b\d{10}\b")

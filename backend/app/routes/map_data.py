@@ -7,13 +7,16 @@ from ..extension import get_supabase, limiter
 from ..utils import load_json
 
 bp = Blueprint("map_data", __name__)
-STATIC_DATA = load_json(Path(__file__).parent.parent / "data" / "map_data.json", {"region":[]})
+STATIC_DATA = load_json(
+    Path(__file__).parent.parent / "data" / "scenarios" / "map_data.json",
+    {"regions": []},
+)
 
 # Must match the state names in the GeoJSON the frontend areas
 
 STATES = {
-    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhatisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
-    "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telengana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi", "Jammu and Kashmir", "Ladakh", "Chandigarh", "Puducherry", "Andaman and Nicobar Islands", "Lakshadweep", "Dadra and Nagar Haveli and Daman and Diu",
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
+    "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi", "Jammu and Kashmir", "Ladakh", "Chandigarh", "Puducherry", "Andaman and Nicobar Islands", "Lakshadweep", "Dadra and Nagar Haveli and Daman and Diu",
 }
 SCAM_TYPES = {"upi_fraud", "digital_arrest", "fake_loan_app", "kyc_fraud", "phishing", "other"}
 

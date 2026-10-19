@@ -90,7 +90,7 @@ def score_text(text: str) -> dict:
     matches.update(analyse_links(extract_urls(text)))
     matches["upi"] = extract_upi_ids(text)
     score = sum(min(len(matches[k]), 3) * w for k, w in WEIGHTS.items())
-    return {"score": min(score, 60), "matches": matches}
+    return {"score": min(score, 100), "matches": matches}
 
 def describe_matches(matches: dict) -> list[str]:
     return [f"{LABELS[k]}: {', '.join(map(str, v[:3]))}"

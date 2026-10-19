@@ -39,7 +39,7 @@ def brand_in_host(host: str)-> str | None:
         for t in tokens:
             if t == brand or (len(brand)>= 4 and t.startswith(brand)):
                 return brand
-        return None
+    return None
 
 def display_name_spoof(display: str, doamin: str)-> str | None:
     """DISPLAY NAME SAYS MICROSOFT BUT ADDRESS ISN'T A MICRSOFT DOMAIN"""

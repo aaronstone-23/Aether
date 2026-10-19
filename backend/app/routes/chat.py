@@ -13,7 +13,7 @@ bp = Blueprint("chat", __name__)
 KB_DIR =Path(__file__).parent.parent/"data"
 KB_TEXT = "\n\n".join(
     (KB_DIR / n).read_text(encoding="utf-8")
-    for n in ("chat_knowledge.md", "checklist.json") if (KB_DIR / n).exists()
+    for n in ("chat_knowledge.md", "scenarios/checklists.json") if (KB_DIR / n).exists()
 )[:8000]
 
 SYSTEM_PROMPT = f"""You are Aether Assistant, a financial scam prevention helper for people in India. 
@@ -26,7 +26,7 @@ Rules:
 - Reply in the language the user writes in. Keep answers under 150 words, in simple words.
 
 Verified facts you may use:
-- Cyber fraud helpline: 1930. Official reporting portal: cybercrmie.gov.in.
+- Cyber fraud helpline: 1930. Official reporting portal: cybercrime.gov.in.
 - If money was sent, call 1930 immediately, then contact the bank.
 - Banks nerver ask for OTP, PIN or CVV by call, SMS or email.
 

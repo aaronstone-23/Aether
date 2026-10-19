@@ -21,7 +21,7 @@ if SEED_DIR.exists():
     for f in sorted(SEED_DIR.glob("*.json")):
         SEED_SCENARIOS.extend(load_json(f, {}).get("scenarios", []))
 
-CACHE = deque = deque(maxlen=50)
+CACHE = deque(maxlen=50)
 LOCK = threading.Lock()
 
 SYSTEM_PROMPT = """You are a financial scam scenario generator for a cybersecurity training app in India.
