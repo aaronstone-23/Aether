@@ -1,9 +1,10 @@
 '''MAP DATA: curated static state data + live anonymous reports'''
 from pathlib import Path
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
 
 from ..extension import get_supabase, limiter
+from ..services.local_reports import add_local_report, local_report_counts
 from ..utils import load_json
 
 bp = Blueprint("map_data", __name__)
@@ -16,7 +17,7 @@ STATIC_REGIONS = STATIC_DATA.get("regions") or STATIC_DATA.get("locations", [])
 # Must match the state names in the GeoJSON the frontend areas
 
 STATES = {
-    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
     "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi", "Jammu and Kashmir", "Ladakh", "Chandigarh", "Puducherry", "Andaman and Nicobar Islands", "Lakshadweep", "Dadra and Nagar Haveli and Daman and Diu",
 }
 SCAM_TYPES = {"upi_fraud", "digital_arrest", "fake_loan_app", "kyc_fraud", "phishing", "other"}
@@ -26,6 +27,7 @@ def map_data():
     sb = get_supabase()
     by_state: dict[str, int] = {}
     by_origin: dict[str, int] = {}
+    storage = "local"
     if sb:
         try:
             rows = sb.table("scam_reports").select("state").limit(5000).execute().data or []
@@ -42,11 +44,17 @@ def map_data():
                 c = origin if isinstance(origin, str) and origin else "Unknown"
                 by_origin[c] = by_origin.get(c, 0) + 1
         except Exception:
-            pass
+            current_app.logger.exception("Could not load shared map report totals")
+            by_state = {row["state"]: row["count"] for row in local_report_counts()}
+        else:
+            storage = "shared"
+    else:
+        by_state = {row["state"]: row["count"] for row in local_report_counts()}
     return jsonify({
         "static": STATIC_REGIONS,
         "live_reports": [{"state": k, "count": v} for k, v in by_state.items()],
         "sender_origins": [{"country": k, "count": v} for k, v in by_origin.items()],
+        "storage": storage,
     }), 200
 
 
@@ -55,10 +63,21 @@ def map_data():
 def report():
     data = request.get_json(silent=True) or {}
     state, scam_type = data.get("state"), data.get("scam_type")
+    if state == "Chattisgarh":
+        state = "Chhattisgarh"
     if state not in STATES or scam_type not in SCAM_TYPES:
         return jsonify({"error": "invalid_report"}), 400
     sb = get_supabase()
     if not sb:
-        return jsonify({"error": "db_unavailable"}), 503
-    sb.table("scam_reports").insert({"state": state, "scam_type": scam_type}).execute()
-    return jsonify({"ok": True}), 200
+        try:
+            add_local_report(state, scam_type)
+        except Exception:
+            current_app.logger.exception("Could not save local map report")
+            return jsonify({"error": "report_storage_unavailable"}), 503
+        return jsonify({"ok": True, "storage": "local"}), 200
+    try:
+        sb.table("scam_reports").insert({"state": state, "scam_type": scam_type}).execute()
+    except Exception:
+        current_app.logger.exception("Could not save shared map report")
+        return jsonify({"error": "report_storage_unavailable"}), 503
+    return jsonify({"ok": True, "storage": "shared"}), 200

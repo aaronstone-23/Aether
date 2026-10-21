@@ -1,0 +1,587 @@
+/* Shared type scale and navigation clarity improvements. */
+body {
+  font-size: 16px;
+  line-height: 1.62;
+}
+
+p:not(.eyebrow) {
+  line-height: 1.62;
+}
+
+.intro {
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.eyebrow,
+.label,
+.field-label {
+  font-family: 'Inter Tight', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .075em;
+  line-height: 1.5;
+}
+
+.muted,
+.small-note,
+.privacy-line,
+.warning-note,
+.recovery-warning,
+.caveat,
+.chat-reminder,
+.reminder-strip,
+.incident-row p,
+.step-copy > span,
+.assistant-panel header .muted {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.trust-strip,
+.site-footer,
+.site-footer button,
+.char-meta,
+.scenario-meta,
+.stats-numbers span,
+.urgent-call small,
+.incident-row time,
+.incident-row a,
+.timeline-labels,
+.quick-nav-meta,
+.quick-nav-caption,
+.quick-nav-field kbd,
+.quick-nav-clear,
+.rail-kicker,
+.rail-setting,
+.emergency-code {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.site-footer,
+.site-footer button {
+  font-family: 'Inter Tight', Arial, sans-serif;
+  color: var(--text-muted);
+}
+
+.site-footer button {
+  font-weight: 600;
+}
+
+.button.primary,
+.button.secondary,
+.text-button,
+.mode-tabs button,
+.filter-chip,
+.format-chip,
+.recovery-tabs button,
+.starter-chips button {
+  font-size: 14px;
+}
+
+.screen-heading h1,
+.hero h1 {
+  line-height: 1.02;
+}
+
+.check-form textarea,
+.scenario-well p,
+.chat-bubble,
+.chat-input input,
+.critical-copy {
+  font-family: 'Inter Tight', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.result-explain,
+.flag-list li,
+.action-list label,
+.answer-reveal ul,
+.answer-reveal li,
+.recovery-step,
+.ranking-name,
+.region-name,
+.region-row strong {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.technical summary,
+.evidence-row,
+.scenario-well .scenario-meta,
+.ranking-index,
+.rank,
+.step-number {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.eyebrow,
+.label,
+.muted,
+.small-note,
+.privacy-line,
+.warning-note,
+.recovery-warning,
+.caveat,
+.trust-strip,
+.site-footer,
+.chat-reminder,
+.step-copy > span,
+.incident-row p,
+.timeline-labels,
+.quick-nav-meta,
+.quick-nav-caption {
+  color: var(--text-muted);
+}
+
+.island {
+  width: 220px;
+  min-height: 60px;
+  top: 18px;
+}
+
+.island-open {
+  width: min(980px, calc(100vw - 32px));
+  padding: 6px 24px 10px;
+  border: 1px solid color-mix(in srgb, var(--nav-fg) 20%, transparent);
+  border-radius: 999px;
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--nav-fg) 8%, var(--nav-bg)), var(--nav-bg) 68%);
+  box-shadow: 0 18px 56px rgba(0, 0, 0, .22), inset 0 1px 0 color-mix(in srgb, var(--nav-fg) 10%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.island-top {
+  position: relative;
+  height: 60px;
+}
+
+.island .theme-icon,
+.island .brand-mark {
+  width: 42px;
+  height: 42px;
+}
+
+.island .brand-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.island .theme-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.island-tools {
+  display: contents;
+}
+
+.island .key-hint {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.island-eye {
+  display: block;
+  width: 26px;
+  height: 26px;
+  overflow: visible;
+}
+
+.island-eye .eye-iris {
+  transition: transform 100ms cubic-bezier(.2,.75,.25,1);
+}
+
+.island-eye .eye-outline {
+  stroke: #E98A4B;
+  stroke-width: 2.35;
+  filter: drop-shadow(0 0 1.5px rgba(233, 138, 75, .28));
+}
+
+.island-wordmark {
+  position: absolute;
+  left: 30px;
+  opacity: 0;
+  pointer-events: none;
+  color: var(--nav-fg);
+  font: 700 15px/1 'Inter Tight', Arial, sans-serif;
+  letter-spacing: .18em;
+  white-space: nowrap;
+  transform: translateX(-12px);
+}
+
+.island-open .island-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr);
+  align-items: center;
+}
+
+.island-open .island-wordmark {
+  position: static;
+  grid-column: 1;
+  justify-self: start;
+  opacity: 1;
+  pointer-events: auto;
+  animation: island-wordmark-enter 520ms cubic-bezier(.16,1,.3,1) both;
+}
+
+.island-open .brand-mark {
+  position: static;
+  grid-column: 2;
+  justify-self: center;
+  width: 62px;
+  height: 58px;
+  transform: none;
+}
+
+.island-open .island-eye {
+  width: 60px;
+  height: 60px;
+}
+
+.island-open .island-tools {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.island-open .theme-icon,
+.island-open .key-hint {
+  position: static;
+  transform: none;
+}
+
+.key-hint {
+  font-size: 12px;
+  opacity: .9;
+}
+
+.island-links {
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.island-open .island-links {
+  max-height: 108px;
+  margin-top: 0;
+  padding: 7px 0 5px;
+  border-top: 1px solid color-mix(in srgb, var(--nav-fg) 12%, transparent);
+}
+
+@keyframes island-wordmark-enter {
+  from { opacity: 0; letter-spacing: .28em; transform: translateX(-12px); }
+  to { opacity: 1; letter-spacing: .18em; transform: translateX(0); }
+}
+
+.nav-group {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-group + .nav-group {
+  padding-left: 10px;
+  border-left: 1px solid color-mix(in srgb, var(--nav-fg) 18%, transparent);
+}
+
+.nav-group-label {
+  padding-left: 10px;
+  color: var(--nav-fg);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: .1em;
+  opacity: .72;
+  text-transform: uppercase;
+}
+
+.nav-group-items {
+  display: flex;
+  gap: 3px;
+}
+
+.nav-link,
+.nav-help {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-family: 'Lato', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: .005em;
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.island-open .nav-link,
+.island-open .nav-help {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: color-mix(in srgb, var(--nav-fg) 9%, transparent);
+}
+
+.nav-link:hover,
+.nav-help:hover {
+  color: var(--nav-fg) !important;
+}
+
+.nav-link.active:after {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  bottom: 2px;
+  left: calc(50% - 9px);
+}
+
+.nav-help {
+  margin: 0 0 0 4px;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  color: var(--nav-fg) !important;
+  border: 1px solid color-mix(in srgb, var(--signal) 62%, var(--nav-fg));
+  background: color-mix(in srgb, var(--signal) 16%, transparent);
+  transition: opacity 160ms ease, transform 180ms ease, color 160ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.nav-help:hover {
+  color: #fff !important;
+  border-color: var(--risk-danger);
+  background: color-mix(in srgb, var(--risk-danger) 82%, #0a0a0b);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--risk-danger) 24%, transparent), 0 8px 24px color-mix(in srgb, var(--risk-danger) 24%, transparent);
+  transform: translateY(-1px);
+}
+
+.nav-help svg {
+  flex: none;
+}
+
+.island :focus-visible {
+  outline-color: var(--signal);
+}
+
+body:has(.island-open) .screen {
+  padding-top: 190px;
+}
+
+.quick-nav-meta,
+.quick-nav-caption,
+.quick-nav-field kbd,
+.quick-nav-clear,
+.quick-nav-empty,
+.quick-nav-option strong,
+.quick-nav-option small {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.map-stat .label,
+.map-stat .muted,
+.map-panel .eyebrow,
+.map-panel .label,
+.map-footnote,
+.legend-title,
+.legend-item small,
+.map-color-picker > label,
+.map-selected-count span,
+.ranking-index,
+.report-form > .muted,
+.report-form .small-note,
+.report-notice {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.report-ranking li button,
+.map-selected-count strong {
+  font-size: 15px;
+}
+
+.map-stat .label,
+.map-panel .eyebrow,
+.map-panel .label,
+.legend-title,
+.map-color-picker > label {
+  letter-spacing: .045em;
+}
+
+.rail-link {
+  min-height: 46px;
+  font-size: 15px;
+}
+
+.rail-setting {
+  min-height: 42px;
+}
+
+.assistant-panel {
+  padding: 19px;
+}
+
+.chat-bubble {
+  font-family: 'Inter Tight', Arial, sans-serif;
+  font-size: 15px;
+}
+
+.chat-input input {
+  font-size: 15px;
+}
+
+.assistant-error {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .island-open {
+    width: min(960px, calc(100vw - 24px));
+    border-radius: 58px;
+  }
+
+  .island-links {
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+
+  .island-open .island-links {
+    max-height: 204px;
+  }
+
+  body:has(.island-open) .screen {
+    padding-top: 250px;
+  }
+
+  .nav-group + .nav-group {
+    padding-left: 9px;
+  }
+
+  .nav-link,
+  .nav-help {
+    padding-right: 8px;
+    padding-left: 8px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .screen-heading .intro,
+  .hero .intro,
+  .intro {
+    font-size: 16px;
+  }
+
+  .island {
+    top: 12px;
+  }
+
+  .island-open {
+    width: calc(100vw - 20px);
+    padding: 6px 12px 9px;
+    border-radius: 34px;
+  }
+
+  .island-open .island-eye {
+    width: 52px;
+    height: 52px;
+  }
+
+  .island-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+    gap: 6px 8px;
+  }
+
+  .island-open .island-links {
+    max-height: 250px;
+    margin-top: 0;
+    padding-bottom: 2px;
+  }
+
+  body:has(.island-open) .screen {
+    padding-top: 310px;
+  }
+
+  .nav-group,
+  .nav-group-items {
+    display: contents;
+  }
+
+  .nav-group-label {
+    display: none;
+  }
+
+  .nav-group + .nav-group {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .nav-link,
+  .nav-help {
+    flex: initial;
+    min-width: 0;
+    min-height: 40px;
+    padding: 7px 6px;
+    white-space: normal;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .nav-help {
+    grid-column: 1 / -1;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .site-footer,
+  .site-footer button {
+    font-size: 13px;
+  }
+
+  .map-footnote,
+  .report-form .small-note {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island,
+  .island-links,
+  .nav-link,
+  .nav-help {
+    transition: none;
+  }
+}
+

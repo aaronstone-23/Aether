@@ -6,7 +6,11 @@ async function request(path, options = {}) {
   catch { throw new Error('Aether could not reach its service. Check your connection and retry.') }
   let body = {}
   try { body = await response.json() } catch { /* An empty response becomes a safe message below. */ }
-  if (!response.ok) throw new Error(body.message || body.detail || body.error || 'The request could not be completed. Please retry.')
+  if (!response.ok) {
+    const error = new Error(body.message || body.detail || body.error || 'The request could not be completed. Please retry.')
+    error.status = response.status
+    throw error
+  }
   return body
 }
 

@@ -5,8 +5,9 @@ import re
 from urllib.parse import urlparse
 
 BRAND_DOMAINS ={
-    "mircrosoft": ["microsoft.com", "office.com", "live.com", "outlook.com"],
-    "google": ["google.com", "gmail.com", "youtbe.com"],
+    "microsoft": ["microsoft.com", "office.com", "live.com", "outlook.com"],
+    "google": ["google.com", "gmail.com"],
+    "youtube": ["youtube.com", "youtu.be"],
     "apple": ["apple.com", "icloud.com"],
     "amazon": ["amazon.com", "amazon.in", "amazonses.com"],
     "paypal": ["paypal.com"],

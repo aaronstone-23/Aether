@@ -9,6 +9,7 @@ env/
 ENV/
 *.egg-info/
 .pytest_cache/
+backend/instance/*.sqlite3
 
 # Environment
 .env
