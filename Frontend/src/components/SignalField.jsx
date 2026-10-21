@@ -1,0 +1,4 @@
+import React, { useState } from 'react'
+
+/* ── Risk signal history ── */
+export default function SignalField({ data, onSelect }) { const [hover, setHover] = useState(null); return <div className="signal-field" role="img" aria-label={`Signal field: ${data.length} recent checks shown by risk score`} onMouseLeave={()=>setHover(null)}>{data.map((item,i)=><button key={item.id} className="signal-bar-wrap" aria-label={`${item.verdict}, risk ${item.risk_score} of 100, ${item.time}`} style={{'--bar-height':`${Math.max(8,item.risk_score)}%`,'--bar-delay':`${i*18}ms`,'--bar-risk':item.risk_score < 34?'var(--risk-safe)':item.risk_score < 67?'var(--risk-caution)':item.risk_score < 81?'var(--risk-danger)':'var(--risk-critical)'}} onMouseEnter={()=>setHover(i)} onFocus={()=>setHover(i)} onClick={()=>onSelect(item.case)}><span className="signal-bar"/>{hover===i&&<span className="signal-tooltip">{item.time}<b>{item.verdict} · {item.risk_score}</b></span>}</button>)}</div> }

@@ -9,7 +9,10 @@ class Config:
     MAX_CONTENT_LENGTH = 1 * 1024 * 1024  #this will reject bodies over 1MB
 
     # comma seperated lists okay?
-    FRONTEND_URL = os.getenv("FRONTEND_URL", "https://localhost:5173")
+    FRONTEND_URL = os.getenv(
+        "FRONTEND_URL",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    )
     ADMIN_KEY = os.getenv("ADMIN_KEY", "")
 
     SUPABASE_URL = os.getenv("SUPABASE_URL", "")

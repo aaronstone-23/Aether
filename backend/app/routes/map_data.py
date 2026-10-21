@@ -11,6 +11,7 @@ STATIC_DATA = load_json(
     Path(__file__).parent.parent / "data" / "scenarios" / "map_data.json",
     {"regions": []},
 )
+STATIC_REGIONS = STATIC_DATA.get("regions") or STATIC_DATA.get("locations", [])
 
 # Must match the state names in the GeoJSON the frontend areas
 
@@ -43,7 +44,7 @@ def map_data():
         except Exception:
             pass
     return jsonify({
-        "static": STATIC_DATA.get("regions", []),
+        "static": STATIC_REGIONS,
         "live_reports": [{"state": k, "count": v} for k, v in by_state.items()],
         "sender_origins": [{"country": k, "count": v} for k, v in by_origin.items()],
     }), 200
