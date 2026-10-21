@@ -144,13 +144,13 @@ All endpoints are prefixed with `/api`.
 
 ## Team & Contributions
 
-**Aarav — Team Lead & Lead Developer**  
+**Aarav - Team Lead & Lead Developer**  
 Architected and developed the core Flask backend, integrated AI models and external APIs, designed and implemented the React/Tailwind frontend, managed full-stack integration and deployment, and led project research.
 
-**Karan — QA & Frontend Testing**  
+**Karan - QA & Frontend Testing**  
 Assisted with frontend testing, usability checks, and user experience validation.
 
-**Anshul — Presentation & QA**  
+**Anshul - Presentation & QA**  
 Designed the project presentation deck and assisted with application testing and validation.
 
 ## License
