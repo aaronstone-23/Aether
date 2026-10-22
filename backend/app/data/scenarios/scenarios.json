@@ -1,8 +1,293 @@
-{"scenarios": [{
-  "id": "seed_kyc_1", "category": "kyc_expiry", "difficulty": "easy", "channel": "sms",
-  "sender": "NOVABK-ALERT", "subject": null,
-  "body": "Dear customer, your Nova Bank KYC expires today. Update now: http://novabank-kyc.example/update or your account will be blocked.",
-  "is_scam": true, "correct_answer": "scam",
-  "explanation": "Real banks don't threaten to block accounts over a link in an SMS.",
-  "red_flags": ["Urgency", "Lookalike link", "Threat of blocking"]
-}]}
+{
+  "scenarios": [
+    {
+      "category": "phishing_email",
+      "difficulty": "medium",
+      "channel": "email",
+      "sender": "Nova Bank Security <alerts@nova-bank.example>",
+      "subject": "Action required: account access review",
+      "body": "Your account will be restricted tonight unless you complete a security review. Confirm your password and one-time code at https://nova-bank-verify.example/restore.",
+      "is_scam": true,
+      "correct_answer": "scam",
+      "explanation": "The email creates urgency, threatens account access, and asks for sensitive details through a lookalike link. Verify through the bank's official app or a phone number you find independently.",
+      "red_flags": [
+        "Threatens to restrict the account",
+        "Requests a password and one-time code",
+        "Uses a lookalike domain"
+      ]
+    },
+    {
+      "category": "sms_scam",
+      "difficulty": "easy",
+      "channel": "sms",
+      "sender": "Parcel Desk · +91-00000-00000",
+      "subject": null,
+      "body": "Your parcel is on hold because the address is incomplete. Pay a ₹25 redelivery fee at https://parcel-redelivery.example/fee to receive it today.",
+      "is_scam": true,
+      "correct_answer": "scam",
+      "explanation": "An unexpected delivery fee paired with a link is a warning sign. Check delivery details through the courier's official app or website instead of following the message link.",
+      "red_flags": [
+        "Unexpected fee request",
+        "Urgent delivery claim",
+        "Link asks you to take payment-related action"
+      ]
+    },
+    {
+      "category": "upi_request",
+      "difficulty": "medium",
+      "channel": "whatsapp",
+      "sender": "Ravi · +91-00000-00000",
+      "subject": null,
+      "body": "I sent your refund request. Approve the collect request from refund@quickpay.example and enter your UPI PIN so the money can be credited.",
+      "is_scam": true,
+      "correct_answer": "scam",
+      "explanation": "A UPI PIN authorizes a payment; it is not needed to receive money. Don't approve an unexpected collect request. Confirm any refund through the official payment app or the organization involved.",
+      "red_flags": [
+        "Asks for a UPI PIN to receive money",
+        "Unexpected collect request",
+        "Refund claim pressures the recipient to approve a payment"
+      ]
+    },
+    {
+      "category": "kyc_expiry",
+      "difficulty": "easy",
+      "channel": "sms",
+      "sender": "Nova Cooperative Bank Notifications <updates@novacoop.example>",
+      "subject": "A reminder about your profile",
+      "body": "A profile review is due for your account. When convenient, open the Nova Cooperative Bank app directly and check its notifications. This message contains no link, and you do not need to reply with a password, PIN, or one-time code.",
+      "is_scam": false,
+      "correct_answer": "legit",
+      "explanation": "This reminder does not demand immediate action or ask for sensitive details. It directs the customer to open the app independently, which is a safer way to verify the notice.",
+      "red_flags": []
+    },
+    {
+      "category": "lottery_prize",
+      "difficulty": "easy",
+      "channel": "whatsapp",
+      "sender": "Rewards Desk",
+      "subject": null,
+      "body": "Congratulations! Your number has been selected for a cash prize. Pay a processing fee today to release your winnings. Keep this offer secret until your claim is complete.",
+      "is_scam": true,
+      "correct_answer": "scam",
+      "explanation": "Unexpected prizes that require an upfront fee are a common scam pattern. The secrecy request adds pressure. Don't pay or share financial details to claim an unsolicited reward.",
+      "red_flags": [
+        "Unexpected prize claim",
+        "Requests an advance fee",
+        "Tells the recipient to keep the offer secret"
+      ]
+    },
+    {
+      "category": "job_offer_scam",
+      "difficulty": "medium",
+      "channel": "email",
+      "sender": "Northstar Careers <careers@northstar.example>",
+      "subject": "Application update",
+      "body": "Thank you for applying for the support associate role. Your application has moved to the next review stage. You can check its status by visiting the careers portal you used to apply. There is no fee to continue the process.",
+      "is_scam": false,
+      "correct_answer": "legit",
+      "explanation": "The message gives a routine application update and does not ask for money or sensitive information. The recipient can verify it by opening the application portal independently.",
+      "red_flags": []
+    },
+    {
+      "category": "tech_support",
+      "difficulty": "hard",
+      "channel": "whatsapp",
+      "sender": "Device Help Team · +91-00000-00000",
+      "subject": null,
+      "body": "We detected a problem with your refund and can fix it remotely. Install the screen-sharing tool we send you, keep the call private, and leave your payment app open while we guide you.",
+      "is_scam": true,
+      "correct_answer": "scam",
+      "explanation": "A stranger asking for remote access, an open payment app, and secrecy could take control of the device or view sensitive information. End the conversation and contact the company through its official support channel.",
+      "red_flags": [
+        "Requests remote screen access",
+        "Asks the recipient to open a payment app",
+        "Pressures the recipient to keep the call private"
+      ]
+    },
+    {
+      "category": "phishing_email",
+      "difficulty": "medium",
+      "channel": "email",
+      "sender": "Aster Cooperative Bank Statements <notices@astercoop.example>",
+      "subject": "Your monthly statement is ready",
+      "body": "Your monthly statement is available. Open the Aster Cooperative Bank app or type its official website address yourself to view it. This notice will not ask you to reply with account details or a one-time code.",
+      "is_scam": false,
+      "correct_answer": "legit",
+      "explanation": "The notice does not include a link or request sensitive information, and it suggests accessing the statement through a channel the customer opens independently.",
+      "red_flags": []
+    },
+    {
+      "category": "sms_scam",
+      "difficulty": "hard",
+      "channel": "sms",
+      "sender": "Case Review Office · +91-00000-00000",
+      "subject": null,
+      "body": "A case has been opened against you. Do not tell your family or contact your bank. Install the private verification app we are about to send and stay on this call until the review is complete.",
+      "is_scam": true,
+      "correct_answer": "scam",
+      "explanation": "The message uses fear and secrecy to isolate the recipient, then asks them to install an unknown app. Stop responding and independently contact the relevant institution or official service.",
+      "red_flags": [
+        "Threatening authority claim",
+        "Tells the recipient not to contact others",
+        "Requests installation of an unknown app"
+      ]
+    },
+    {
+      "category": "upi_request",
+      "difficulty": "easy",
+      "channel": "sms",
+      "sender": "QuickPay Alerts <notice@quickpay.example>",
+      "subject": null,
+      "body": "A transfer of ₹350 has been recorded in your account. If you were not expecting it, open the QuickPay app yourself to review the activity. You do not need to enter a PIN to receive money.",
+      "is_scam": false,
+      "correct_answer": "legit",
+      "explanation": "This is an informational notice that asks the recipient to check the app independently. It does not request a PIN or ask them to approve a payment to receive funds.",
+      "red_flags": []
+    },
+    {
+    "category": "phishing_email",
+    "difficulty": "hard",
+    "channel": "email",
+    "sender": "Meridian Bank Documents <files@meridian-secure.example>",
+    "subject": "Shared file: account review notes",
+    "body": "A document has been shared with you for an urgent account review. Sign in at https://meridian-docs.example/view to read it before access expires. If you have trouble, reply with the one-time code sent to your phone.",
+    "is_scam": true,
+    "correct_answer": "scam",
+    "explanation": "The message combines a deadline, a lookalike sign-in link, and a request for a one-time code. Open the bank's official app or website yourself to check whether the document exists.",
+    "red_flags": [
+      "Urgent deadline",
+      "Lookalike sign-in domain",
+      "Requests a one-time code"
+    ]
+  },
+  {
+    "category": "sms_scam",
+    "difficulty": "easy",
+    "channel": "sms",
+    "sender": "Meridian Bank Alerts <notice@meridianbank.example>",
+    "subject": null,
+    "body": "A new device was added to your account. If this was you, no action is needed. If you do not recognize it, open the Meridian Bank app directly and review your security settings.",
+    "is_scam": false,
+    "correct_answer": "legit",
+    "explanation": "The alert does not include a link or ask for credentials. It directs the recipient to open the app independently to review the activity.",
+    "red_flags": []
+  },
+  {
+    "category": "upi_request",
+    "difficulty": "medium",
+    "channel": "whatsapp",
+    "sender": "Buyer · +91-00000-00000",
+    "subject": null,
+    "body": "I have sent the payment request for the item. Accept it and enter your UPI PIN so the payment reaches your account. I am waiting nearby, so please finish it now.",
+    "is_scam": true,
+    "correct_answer": "scam",
+    "explanation": "The buyer is asking the seller to approve a payment and enter a PIN to receive money. A UPI PIN authorizes a payment, so verify the transaction in your own app and do not approve an unexpected request.",
+    "red_flags": [
+      "Asks for a UPI PIN to receive money",
+      "Unexpected payment request",
+      "Uses time pressure"
+    ]
+  },
+  {
+    "category": "kyc_expiry",
+    "difficulty": "medium",
+    "channel": "sms",
+    "sender": "Account Review · +91-00000-00000",
+    "subject": null,
+    "body": "Your account verification will expire in 30 minutes. Update your details at https://meridian-kyc.example/confirm or outgoing transfers may be stopped. Keep your phone nearby to confirm your identity.",
+    "is_scam": true,
+    "correct_answer": "scam",
+    "explanation": "The message uses a short deadline and an account threat to push the recipient toward a link. Verify account notices through the official app or a trusted contact number.",
+    "red_flags": [
+      "Short deadline",
+      "Threatens to stop account activity",
+      "Uses a link to request verification"
+    ]
+  },
+  {
+    "category": "lottery_prize",
+    "difficulty": "hard",
+    "channel": "email",
+    "sender": "Prize Claims Office <claims@global-winner.example>",
+    "subject": "Final step to release your award",
+    "body": "Your email address was selected for a cash award, but the claim window closes today. Send your bank details and pay a small release charge to receive the funds. Please do not discuss this private award with anyone.",
+    "is_scam": true,
+    "correct_answer": "scam",
+    "explanation": "The message claims an unexpected prize, requests bank details and an upfront payment, and asks the recipient to keep it secret. Do not pay or share financial information to claim an unsolicited award.",
+    "red_flags": [
+      "Unexpected prize",
+      "Requests bank details",
+      "Asks for an upfront fee",
+      "Pressures the recipient to keep it secret"
+    ]
+  },
+  {
+    "category": "job_offer_scam",
+    "difficulty": "easy",
+    "channel": "whatsapp",
+    "sender": "BrightPath Hiring",
+    "subject": null,
+    "body": "Congratulations, you have been selected for a remote role without an interview. Pay a registration fee today and purchase the required starter kit from our supplier. Your job offer will be cancelled if payment is late.",
+    "is_scam": true,
+    "correct_answer": "scam",
+    "explanation": "The offer guarantees a job without a normal selection process and requires upfront payments. Verify the employer independently and do not pay fees to secure a job.",
+    "red_flags": [
+      "Job offer without a normal interview process",
+      "Requests registration and kit fees",
+      "Threatens to cancel the offer"
+    ]
+  },
+  {
+    "category": "tech_support",
+    "difficulty": "medium",
+    "channel": "email",
+    "sender": "Meridian Device Support <help@meridian-support.example>",
+    "subject": "We received your support request",
+    "body": "Your support request has been logged. A support representative will reply through the help centre you contacted. We will not ask you to install screen-sharing software or tell us your password or one-time code.",
+    "is_scam": false,
+    "correct_answer": "legit",
+    "explanation": "This is a confirmation of a support request and does not ask for remote access or sensitive information. The recipient can follow up through the help centre they opened themselves.",
+    "red_flags": []
+  },
+  {
+    "category": "phishing_email",
+    "difficulty": "easy",
+    "channel": "email",
+    "sender": "Northstar Account Notices <security@northstar.example>",
+    "subject": "New sign-in notification",
+    "body": "A sign-in to your account was recorded from a new device. If you recognize it, no action is needed. To review recent activity, open the Northstar app directly rather than replying to this email.",
+    "is_scam": false,
+    "correct_answer": "legit",
+    "explanation": "The message provides an account alert without a link or request for credentials. It recommends checking activity through the app opened independently.",
+    "red_flags": []
+  },
+  {
+    "category": "sms_scam",
+    "difficulty": "hard",
+    "channel": "sms",
+    "sender": "Utility Service Desk · +91-00000-00000",
+    "subject": null,
+    "body": "Your electricity service will be disconnected tonight because of an unpaid bill. Pay immediately at https://quick-bill.example/restore and send the confirmation code to this number to prevent disconnection.",
+    "is_scam": true,
+    "correct_answer": "scam",
+    "explanation": "The message threatens immediate disconnection, sends the recipient to an unfamiliar payment page, and asks for a confirmation code. Check the bill using the utility provider's official app or website.",
+    "red_flags": [
+      "Threatens immediate service disconnection",
+      "Pushes payment through an unfamiliar link",
+      "Requests a confirmation code"
+    ]
+  },
+  {
+    "category": "upi_request",
+    "difficulty": "easy",
+    "channel": "sms",
+    "sender": "Northstar Payments <receipts@northstarpay.example>",
+    "subject": null,
+    "body": "A payment of ₹480 was received. No action is needed to receive these funds. Open your payment app directly if you want to review the transaction.",
+    "is_scam": false,
+    "correct_answer": "legit",
+    "explanation": "The notification does not ask the recipient to approve a request, enter a PIN, or follow a link. It suggests checking the transaction in the app.",
+    "red_flags": []
+  }
+  ]
+}

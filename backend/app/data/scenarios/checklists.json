@@ -1,3 +1,88 @@
 {
-  "checklists": []
+  "checklists": [
+    {
+      "id": "suspicious-message",
+      "title": "Before responding to a suspicious message",
+      "when_to_use": "A message asks you to click a link, act urgently, share information, or make a payment.",
+      "steps": [
+        "Pause. Urgent language is a reason to verify, not a reason to act faster.",
+        "Do not share a password, one-time code, PIN, CVV, or identity document in response to an unexpected message.",
+        "Do not use links or phone numbers provided in the message.",
+        "Open the official app or website yourself, or call a number printed on your card or official documents.",
+        "If the request is unexpected, confirm it with the organization using a separate trusted channel."
+      ]
+    },
+    {
+      "id": "upi-collect-request",
+      "title": "When you receive a UPI collect request",
+      "when_to_use": "Someone says you must approve a payment request or enter your UPI PIN to receive money or a refund.",
+      "steps": [
+        "Read the request in your payment app before taking any action.",
+        "Remember that entering a UPI PIN authorizes a payment; it is not required to receive money.",
+        "Decline unexpected collect requests and do not scan a QR code to receive a refund.",
+        "Verify refunds with the merchant or organization through its official app or contact details.",
+        "If you approved a payment you did not intend to make, contact your bank or payment provider promptly."
+      ]
+    },
+    {
+      "id": "money-sent",
+      "title": "If you sent money to a suspected scammer",
+      "when_to_use": "You made a transfer or payment and think it may have gone to a scammer.",
+      "steps": [
+        "In India, call the cyber fraud helpline at 1930 as soon as possible.",
+        "Contact your bank or payment provider using its official app or a trusted phone number. Ask them to report and review the transaction.",
+        "Report the incident at cybercrime.gov.in.",
+        "Save transaction references, messages, phone numbers, and screenshots.",
+        "Change any PIN or password you shared, and secure any affected accounts."
+      ]
+    },
+    {
+      "id": "shared-account-details",
+      "title": "If you shared a password or account details",
+      "when_to_use": "You entered credentials or shared a one-time code, PIN, card details, or identity information.",
+      "steps": [
+        "Use the official app or website to change affected passwords and PINs.",
+        "If the service offers it, sign out other sessions and review recent account activity.",
+        "Contact the bank or service provider through its official channel if payment or identity details were exposed.",
+        "Do not share additional codes with anyone who contacts you, even if they claim to be helping.",
+        "Keep a record of what was shared and when."
+      ]
+    },
+    {
+      "id": "remote-access-request",
+      "title": "If someone asked for remote access",
+      "when_to_use": "A caller or message asks you to install a screen-sharing or remote-control app.",
+      "steps": [
+        "Do not install the app or share your screen with an unexpected caller.",
+        "If you already granted access, disconnect the session and remove the remote-access app when it is safe to do so.",
+        "Contact your bank using a different trusted device if payment information may have been visible.",
+        "Change exposed passwords from a device you trust and review recent account activity.",
+        "Get technical support through the device maker's or service provider's official website."
+      ]
+    },
+    {
+      "id": "email-header-review",
+      "title": "When reviewing suspicious email headers",
+      "when_to_use": "You are checking the sender, reply address, or routing details of an email.",
+      "steps": [
+        "Compare the From and Reply-To addresses and look carefully for misspelled or lookalike domains.",
+        "Review SPF, DKIM, and DMARC results when available, but do not treat a displayed result alone as proof that an email is genuine.",
+        "Remember that headers can be incomplete or forged, and parsed evidence may not have been independently verified.",
+        "Treat links and attachments as untrusted until you verify them through a separate official channel.",
+        "Do not infer a person's identity or intent from a server location alone."
+      ]
+    },
+    {
+      "id": "unexpected-prize-or-job",
+      "title": "When an offer asks for an upfront fee",
+      "when_to_use": "A prize, job, loan, refund, or other opportunity requires a fee before you receive it.",
+      "steps": [
+        "Be cautious of unexpected offers that require payment to release money or begin work.",
+        "Do not send money, gift cards, cryptocurrency, or payment credentials to claim an unsolicited offer.",
+        "Verify the organization through contact information you find independently.",
+        "Do not share identity documents or banking details until you have confirmed the organization and purpose.",
+        "Keep the message and payment request as evidence if you need to report it."
+      ]
+    }
+  ]
 }
