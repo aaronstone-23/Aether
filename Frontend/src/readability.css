@@ -141,6 +141,8 @@ p:not(.eyebrow) {
   width: 220px;
   min-height: 60px;
   top: 18px;
+  contain: layout;
+  transition: width 520ms cubic-bezier(.22,1,.36,1), border-radius 420ms cubic-bezier(.22,1,.36,1), box-shadow 260ms ease, background-color 260ms ease;
 }
 
 .island-open {
@@ -173,6 +175,7 @@ p:not(.eyebrow) {
   padding: 0;
   place-items: center;
   transform: translate(-50%, -50%);
+  transition: width 520ms cubic-bezier(.22,1,.36,1), height 520ms cubic-bezier(.22,1,.36,1), background-color 120ms ease;
 }
 
 .island .theme-icon {
@@ -180,6 +183,7 @@ p:not(.eyebrow) {
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
+  transition: left 520ms cubic-bezier(.22,1,.36,1), right 520ms cubic-bezier(.22,1,.36,1), background-color 120ms ease;
 }
 
 .island-tools {
@@ -191,6 +195,7 @@ p:not(.eyebrow) {
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
+  transition: right 520ms cubic-bezier(.22,1,.36,1), opacity 180ms ease;
 }
 
 .island-eye {
@@ -198,10 +203,11 @@ p:not(.eyebrow) {
   width: 26px;
   height: 26px;
   overflow: visible;
+  transition: width 520ms cubic-bezier(.22,1,.36,1), height 520ms cubic-bezier(.22,1,.36,1);
 }
 
 .island-eye .eye-iris {
-  transition: transform 100ms cubic-bezier(.2,.75,.25,1);
+  transition: none;
 }
 
 .island-eye .eye-outline {

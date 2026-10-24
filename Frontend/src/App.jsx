@@ -12,6 +12,11 @@ import ScamMap from './screens/Map'
 import Recovery from './screens/Recovery'
 import HeistTransition from './components/HeistTransition'
 
+const HEIST_THEME_SWITCH_MS = 2800
+const HEIST_TRANSITION_END_MS = 4000
+const HEIST_AUDIO_FADE_START_MS = 2800
+const HEIST_AUDIO_FADE_DURATION_MS = 1100
+
 function Router({
     page,
     go,
@@ -133,15 +138,19 @@ function Shell() {
             audio.currentTime = 0
             audio.volume = 0.3
 
-            const startedAT = performance.now()
+            const startedAt = performance.now()
             const playResult = audio.play()
             playResult?.catch?.(() => { })
 
             audioFadeTimer.current = window.setInterval(() => {
-                const progress = Math.min((performance.now() - startedAT) / 1700, 1)
-                audio.volume = 0.3 * (1 - progress)
+                const elapsed = performance.now() - startedAt
+                const fadeProgress = Math.min(
+                    Math.max((elapsed - HEIST_AUDIO_FADE_START_MS) / HEIST_AUDIO_FADE_DURATION_MS, 0),
+                    1,
+                )
+                audio.volume = 0.3 * (1 - fadeProgress)
 
-                if (progress >= 1) {
+                if (fadeProgress >= 1) {
                     window.clearInterval(audioFadeTimer.current)
                     audio.pause()
                     audio.currentTime = 0
@@ -154,12 +163,12 @@ function Shell() {
             window.setTimeout(() => {
                 setHeistMode(nextMode)
                 setTransitionPhase('reveal')
-            }, 900),
+            }, HEIST_THEME_SWITCH_MS),
 
             window.setTimeout(() => {
                 setTransitionPhase('idle')
                 transitioning.current = false
-            }, 1800),
+            }, HEIST_TRANSITION_END_MS),
         ]
     }
 

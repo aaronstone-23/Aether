@@ -29,17 +29,34 @@ export default function Nav({
   onToggleHeist,
 }) {
   const [open, setOpen] = useState(false)
-  const [pupil, setPupil] = useState({ x: 0, y: 0 })
 
   const eyeRef = useRef(null)
+  const eyeCenter = useRef(null)
   const clickCount = useRef(0)
   const clickTimer = useRef(null)
+  const pointerFrame = useRef(null)
+  const pointerPosition = useRef(null)
 
   const { theme, setTheme } = useTheme()
   const nextTheme = theme === 'light' ? 'dark' : 'light'
   const visibleGroups = heistMode ? heistNavGroup : navGroups
 
   const close = () => setOpen(false)
+
+  const measureEyeCenter = () => {
+    const eye = eyeRef.current
+    if (!eye) return
+    const rect = eye.getBoundingClientRect()
+    eyeCenter.current = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    }
+  }
+
+  const openIsland = () => {
+    measureEyeCenter()
+    setOpen(true)
+  }
 
   const handleBrandClick = () => {
     go('overview')
@@ -63,28 +80,52 @@ export default function Nav({
     : 'Ctrl K'
 
   const trackPointer = (event) => {
-    const eye = eyeRef.current
-    if (!eye) return
+    if (heistMode) return
+    if (!eyeRef.current?.querySelector('.eye-iris')) return
+    if (!eyeCenter.current) measureEyeCenter()
 
-    const rect = eye.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    const clamp = (value) => Math.max(-1, Math.min(1, value))
+    pointerPosition.current = { x: event.clientX, y: event.clientY }
+    if (pointerFrame.current !== null) return
 
-    setPupil({
-      x: Number(
-        (clamp((event.clientX - centerX) / (window.innerWidth * 0.38)) * 4.2).toFixed(1),
-      ),
-      y: Number(
-        (clamp((event.clientY - centerY) / Math.max(72, window.innerHeight * 0.26)) * 3.1).toFixed(1),
-      ),
+    pointerFrame.current = window.requestAnimationFrame(() => {
+      pointerFrame.current = null
+      const eye = eyeRef.current
+      const pointer = pointerPosition.current
+      const iris = eye?.querySelector('.eye-iris')
+      const center = eyeCenter.current
+      if (!eye || !pointer || !iris || !center) return
+
+      const clamp = (value) => Math.max(-1, Math.min(1, value))
+      const x = (clamp((pointer.x - center.x) / (window.innerWidth * 0.38)) * 4.2).toFixed(1)
+      const y = (clamp((pointer.y - center.y) / Math.max(72, window.innerHeight * 0.26)) * 3.1).toFixed(1)
+
+      iris.setAttribute('transform', `translate(${x} ${y})`)
     })
   }
 
-  const resetPupil = () => setPupil({ x: 0, y: 0 })
+  const resetPupil = () => {
+    pointerPosition.current = null
+    eyeCenter.current = null
+    if (pointerFrame.current !== null) {
+      window.cancelAnimationFrame(pointerFrame.current)
+      pointerFrame.current = null
+    }
+    eyeRef.current?.querySelector('.eye-iris')?.setAttribute('transform', 'translate(0 0)')
+  }
 
   useEffect(() => {
-    return () => window.clearTimeout(clickTimer.current)
+    return () => {
+      window.clearTimeout(clickTimer.current)
+      if (pointerFrame.current !== null) {
+        window.cancelAnimationFrame(pointerFrame.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const onResize = () => measureEyeCenter()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
   }, [])
 
   useEffect(() => {
@@ -112,8 +153,8 @@ export default function Nav({
 
   return (
     <header
-      className={`island ${open ? 'island-open' : ''}`}
-      onMouseEnter={() => setOpen(true)}
+      className={`island ${heistMode ? 'island-heist' : ''} ${open ? 'island-open' : ''}`}
+      onMouseEnter={openIsland}
       onPointerMove={trackPointer}
       onMouseLeave={() => {
         close()
@@ -141,8 +182,6 @@ export default function Nav({
             <Mark
               className="island-eye"
               size={60}
-              pupilX={pupil.x}
-              pupilY={pupil.y}
             />
           )}
         </button>

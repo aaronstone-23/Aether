@@ -22,6 +22,94 @@ html[data-heist-mode="on"] {
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
 }
 
+/* Coordinated heist-mode motion: the shell, label, and menu expand together. */
+.island-heist {
+  contain: layout;
+  border: 1px solid transparent;
+  border-radius: 28px;
+  background: var(--nav-bg);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition:
+    width 480ms cubic-bezier(.22, 1, .36, 1),
+    border-radius 420ms cubic-bezier(.22, 1, .36, 1),
+    border-color 220ms ease,
+    padding 320ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.island-heist.island-open {
+  border-color: color-mix(in srgb, var(--nav-fg) 20%, transparent);
+  border-radius: 999px;
+}
+
+.island-heist .island-wordmark {
+  transition: opacity 220ms ease, transform 320ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.island-heist.island-open .island-wordmark {
+  animation: none;
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 70ms;
+}
+
+.island-heist .theme-icon {
+  transition:
+    left 480ms cubic-bezier(.22, 1, .36, 1),
+    transform 320ms cubic-bezier(.22, 1, .36, 1),
+    background-color 120ms ease;
+}
+
+.island-heist.island-open .theme-icon {
+  position: absolute;
+  top: 50%;
+  left: calc(100% - 100px);
+  right: auto;
+  transform: translateY(-50%);
+}
+
+.island-heist .island-links {
+  padding: 0;
+  border-top: 1px solid transparent;
+  transition:
+    max-height 420ms cubic-bezier(.22, 1, .36, 1),
+    opacity 240ms ease,
+    padding 260ms cubic-bezier(.22, 1, .36, 1),
+    border-color 220ms ease;
+  transition-delay: 0ms;
+}
+
+.island-heist.island-open .island-links {
+  padding: 7px 0 5px;
+  border-top-color: color-mix(in srgb, var(--nav-fg) 12%, transparent);
+  transition-delay: 30ms;
+}
+
+.island-heist .nav-link,
+.island-heist .nav-help {
+  transition:
+    opacity 200ms ease,
+    transform 260ms cubic-bezier(.22, 1, .36, 1),
+    color 160ms ease;
+  transition-delay: calc(var(--item, 0) * 18ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-heist,
+  .island-heist .island-wordmark,
+  .island-heist .theme-icon,
+  .island-heist .island-links,
+  .island-heist .nav-link,
+  .island-heist .nav-help {
+    transition: none;
+  }
+
+  .island-heist.island-open .island-wordmark {
+    animation: none;
+  }
+}
+
 .heist-transition {
   position: fixed;
   inset: 0;
@@ -35,20 +123,20 @@ html[data-heist-mode="on"] {
 }
 
 .heist-transition--cover {
-  animation: heist-curtain-in 300ms ease both;
+  animation: heist-curtain-in 700ms ease both;
 }
 
 .heist-transition--reveal {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 800ms ease;
+  transition: opacity 1200ms ease;
 }
 
 .heist-transition__center {
   display: grid;
   justify-items: center;
   gap: 24px;
-  animation: heist-mask-in 800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: heist-mask-in 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .heist-transition__center svg,
@@ -68,7 +156,7 @@ html[data-heist-mode="on"] {
   animation: none;
   opacity: 0;
   transform: scale(0.94);
-  transition: opacity 700ms ease, transform 700ms ease;
+  transition: opacity 1000ms ease, transform 1000ms ease;
 }
 
 @keyframes heist-curtain-in {
