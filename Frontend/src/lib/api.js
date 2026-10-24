@@ -24,5 +24,22 @@ export const api = {
   mapData: () => request('/map/data'),
   submitReport: (state, scam_type) => request('/map/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ state, scam_type }) }),
   recoverySteps: (kind) => request(`/panic/${kind}`),
-  assistantReply: (message, history = [], context = null, session_id = 'anon') => request('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, history, context, session_id: session_id || 'anon' }) }),
+
+  assistantReply:
+    (message,
+      history = [],
+      context = null,
+      session_id = 'anon',
+      persona = 'normal',
+    ) => request('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        history,
+        context,
+        session_id: session_id || 'anon',
+        persona
+      })
+    }),
 }

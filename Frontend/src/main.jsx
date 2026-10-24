@@ -7,5 +7,6 @@ import './fieldnotes.css'
 import './quicknav.css'
 import './map.css'
 import './readability.css'
+import './heist.css'
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>)

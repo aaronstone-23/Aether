@@ -29,6 +29,7 @@ class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=1000)
     history: list[ChatTurn] = Field(default_factory=list, max_length= 10)
     context: Optional[dict[str, Any]] = None
+    persona: Literal["normal", "heist"] = "normal"
 
 class PanicRequest(BaseModel):
     situation: str = ""

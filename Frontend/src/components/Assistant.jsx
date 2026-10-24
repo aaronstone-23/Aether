@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { api } from '../lib/api'
-import { ChatIcon, Icon } from './Icons'
+import { ChatIcon, Icon, ProfessorIcon } from './Icons'
 
 /* ── Persistent safety assistant ── */
-function AssistantPanel({ activeCase, open, setOpen }) {
+function AssistantPanel({ activeCase, open, setOpen, heistMode = false }) {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
@@ -28,16 +28,19 @@ function AssistantPanel({ activeCase, open, setOpen }) {
     try {
       const context = activeCase
         ? {
-            verdict: activeCase.verdict,
-            risk_score: activeCase.risk_score,
-            red_flags: activeCase.red_flags,
-          }
+          verdict: activeCase.verdict,
+          risk_score: activeCase.risk_score,
+          red_flags: activeCase.red_flags,
+        }
         : null
       const response = await api.assistantReply(
         message,
         prior.slice(-10).map(({ role, content }) => ({ role, content })),
         context,
+        'anon',
+        heistMode ? 'heist' : 'normal',
       )
+
       const reply = typeof response?.reply === 'string' ? response.reply.trim() : ''
       if (!reply) throw new Error('The assistant returned an empty reply. Please retry.')
       setMessages([...prior, { role: 'user', content: message }, { role: 'assistant', content: reply }])
@@ -50,12 +53,19 @@ function AssistantPanel({ activeCase, open, setOpen }) {
 
   return <>
     <button className="assistant-anchor" aria-label={open ? 'Close Aether assistant' : 'Open Aether assistant'} onClick={() => setOpen(!open)}>
-      <ChatIcon size={22}/>
+      {heistMode ? <ProfessorIcon size={24} /> : <ChatIcon size={22} />}
     </button>
     {open && <section className="assistant-panel panel" aria-label="Aether safety assistant">
       <header>
-        <div><p className="eyebrow">Aether assistant</p><p className="muted">Scam and account safety</p></div>
-        <button className="icon-button" aria-label="Close assistant" onClick={() => setOpen(false)}><Icon name="close"/></button>
+        <div><p className="eyebrow">
+          {heistMode ? 'The Professor' : 'Aether assistant'}
+        </p>
+          <p className="muted">
+            {heistMode
+              ? 'Either we both win… or we both lose.'
+              : 'Scam and account safety'}
+          </p></div>
+        <button className="icon-button" aria-label="Close assistant" onClick={() => setOpen(false)}><Icon name="close" /></button>
       </header>
       <div className="chat-messages" aria-live="polite">
         {messages.length === 0 && <div className="starter-chips">
@@ -66,17 +76,21 @@ function AssistantPanel({ activeCase, open, setOpen }) {
         {messages.map((message, index) =>
           <div key={index} className={`chat-bubble ${message.role}`}>{message.content}</div>,
         )}
-        {busy && <div className="typing" aria-label="Assistant is responding"><i/><i/><i/></div>}
+        {busy && <div className="typing" aria-label="Assistant is responding"><i /><i /><i /></div>}
         {error && <div className="assistant-error" role="alert">
           {error}
           <button className="text-button" onClick={() => send(messages.at(-1)?.content, true)}>Retry</button>
         </div>}
-        <div ref={bottom}/>
+        <div ref={bottom} />
       </div>
       <form className="chat-input" onSubmit={(event) => { event.preventDefault(); send() }}>
         <label className="sr-only" htmlFor="assistant-input">Ask a scam safety question</label>
-        <input id="assistant-input" value={input} onChange={(event) => setInput(event.target.value)} placeholder="Ask about a suspicious request…" maxLength={1000}/>
-        <button className="button primary" disabled={busy || !input.trim()} aria-label="Send message"><Icon name="arrow"/></button>
+        <input id="assistant-input" value={input} onChange={(event) => setInput(event.target.value)} placeholder={
+          heistMode
+            ? 'The plan is devised to survive... even my death.'
+            : 'Ask about a suspicious request…'
+        } maxLength={1000} />
+        <button className="button primary" disabled={busy || !input.trim()} aria-label="Send message"><Icon name="arrow" /></button>
       </form>
       <p className="chat-reminder">Never share OTP, PIN, or CVV.</p>
     </section>}
@@ -106,5 +120,5 @@ class AssistantErrorBoundary extends React.Component {
 }
 
 export default function Assistant(props) {
-  return <AssistantErrorBoundary><AssistantPanel {...props}/></AssistantErrorBoundary>
+  return <AssistantErrorBoundary><AssistantPanel {...props} /></AssistantErrorBoundary>
 }

@@ -104,7 +104,7 @@ function stateLevel(count, maximum) {
   return Math.max(1, Math.ceil(Math.sqrt(count / maximum) * 4))
 }
 
-export default function ScamMap() {
+export default function ScamMap({ heistMode = false }) {
   const [data, setData] = useState(null)
   const [localReports, setLocalReports] = useState(readLocalReports)
   const [mapColor, setMapColor] = useState(getInitialMapColor)
@@ -214,7 +214,11 @@ export default function ScamMap() {
     <main className="screen map-screen">
       <div className="screen-heading map-heading">
         <p className="eyebrow">Community report desk</p>
-        <h1>See the signals<br />across <em>India.</em></h1>
+        <h1>
+          {heistMode
+            ? <>Plan the next move<br />with more <em>control.</em></>
+            : <>See the signals<br />throughout the <em>nation</em></>}
+        </h1>
         <p className="intro">
           Explore scam reports by state and union territory. Add an anonymous regional signal to help build a clearer picture.
         </p>
