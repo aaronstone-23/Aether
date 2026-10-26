@@ -11,7 +11,8 @@ import Bank from './screens/Bank'
 import ScamMap from './screens/Map'
 import Recovery from './screens/Recovery'
 import HeistTransition from './components/HeistTransition'
-
+import Casebook from './screens/Casebook'
+import { useCasebook } from './lib/useCasebook'
 const HEIST_THEME_SWITCH_MS = 2800
 const HEIST_TRANSITION_END_MS = 4000
 const HEIST_AUDIO_FADE_START_MS = 2800
@@ -27,6 +28,12 @@ function Router({
     onAsk,
     onPractice,
     heistMode,
+    onSaveCase,
+    savedCases,
+    onUpdateCase,
+    onDeleteCase,
+    onClearCases,
+    casebookError,
 }) {
     const onResult = (data) => {
         setActiveCase(data)
@@ -45,11 +52,22 @@ function Router({
         ].slice(0, 40))
     }
 
-    const props = { onResult, onAsk, onPractice, heistMode }
+    const props = { onResult, onAsk, onPractice, onSaveCase, heistMode, }
 
     switch (page) {
         case 'check':
             return <Check {...props} />
+        case 'casebook':
+            return (
+                <Casebook
+                    cases={savedCases}
+                    onUpdateCase={onUpdateCase}
+                    onDeleteCase={onDeleteCase}
+                    onClearCases={onClearCases}
+                    storageError={casebookError}
+                    heistMode={heistMode}
+                />
+            )
         case 'email':
             return <Email {...props} />
         case 'practice':
@@ -69,6 +87,7 @@ function Router({
                     go={go}
                     onAsk={onAsk}
                     onPractice={onPractice}
+                    onSaveCase={onSaveCase}
                     heistMode={heistMode}
                 />
             )
@@ -82,7 +101,14 @@ function Shell() {
     const [chatOpen, setChatOpen] = useState(false)
     const [heistMode, setHeistMode] = useState(false)
     const [transitionPhase, setTransitionPhase] = useState('idle')
-
+    const {
+        cases: savedCases,
+        error: casebookError,
+        saveCase: onSaveCase,
+        updateCase: onUpdateCase,
+        deleteCase: onDeleteCase,
+        clearCases: onClearCases,
+    } = useCasebook()
     const transitioning = useRef(false)
     const transitionTimers = useRef([])
     const audioRef = useRef(null)
@@ -197,6 +223,12 @@ function Shell() {
                     setActiveCase={setActiveCase}
                     onAsk={ask}
                     onPractice={() => go('practice')}
+                    onSaveCase={onSaveCase}
+                    savedCases={savedCases}
+                    onUpdateCase={onUpdateCase}
+                    onDeleteCase={onDeleteCase}
+                    onClearCases={onClearCases}
+                    casebookError={casebookError}
                     heistMode={heistMode}
                 />
 

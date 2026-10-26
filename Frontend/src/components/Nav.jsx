@@ -3,7 +3,7 @@ import { useTheme } from '../lib/contexts'
 import { HeistMaskIcon, Icon, Mark } from './Icons'
 
 const navGroups = [
-  { label: 'Workspace', links: [['overview', 'Overview']] },
+  { label: 'Workspace', links: [['overview', 'Overview'], ['casebook', 'Casebook']] },
   { label: 'Analyze', links: [['check', 'Check a message'], ['email', 'Email forensics']] },
   { label: 'Learn', links: [['practice', 'Practice']] },
   { label: 'Monitor', links: [['bank', 'Bank watch'], ['map', 'Scam reports']] },
@@ -11,7 +11,7 @@ const navGroups = [
 ]
 
 const heistNavGroup = [
-  { label: 'Command', links: [['overview', 'Briefing']] },
+  { label: 'Command', links: [['overview', 'Briefing'], ['casebook', 'Case files']] },
   { label: 'Assess', links: [['check', 'Read a message'], ['email', 'Trace an email']] },
   { label: 'Train', links: [['practice', 'Rehearse']] },
   { label: 'Monitor', links: [['bank', 'Bank watch'], ['map', 'Signal map']] },
